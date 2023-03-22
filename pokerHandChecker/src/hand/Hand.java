@@ -38,12 +38,18 @@ public class Hand {
     public List<Integer> getCardValues() { return this.hand.stream().map(Card::getCardValue).collect(Collectors.toList());}
 
     /**
+     * returns the most frequents value in the hand
+     * @return
+     */
+    public List<Integer> getMostFrequentValues () {
+        return mostFrequentsChecker(this.getCardValues());
+    }
+
+    /**
      * returns the most frequent value in the hand
      * @return
      */
-    public Integer getMostFrequentValue () {
-        return mostFrequentChecker(this.getCardValues());
-    }
+    public Integer getMostFrequentValue() { return mostFrequentChecker(this.getCardValues()); }
 
     /**
      * the order of the ifs show the height of the mapping
@@ -222,12 +228,37 @@ public class Hand {
      * this is important if we have two flushs because than the highest three of a kind wins
      * @return
      */
-    private int mostFrequentChecker(List<Integer> cardValues) {
+    private List<Integer> mostFrequentsChecker(List<Integer> cardValues) {
+        int n = cardValues.size();
+        int max_count = 0;
+        List<Integer> maxfreq = new ArrayList<Integer>();
+
+        for (int i = 0; i < n; i++){
+            int count = 0;
+            for (Integer cardValue : cardValues) {
+                if (Objects.equals(cardValues.get(i), cardValue)) {
+                    count++;
+                }
+            }
+
+            if (count > max_count){
+                max_count = count;
+                maxfreq.add(cardValues.get(i));
+            }
+        }
+        return maxfreq;
+    }
+
+    /**
+     * returns a single most frequent for fullhouse
+     * @param cardValues
+     * @return
+     */
+    private Integer mostFrequentChecker(List<Integer> cardValues) {
         int n = cardValues.size();
         int max_count = 0;
         int maxfreq = 0;
 
-        //Logic implementation
         for (int i = 0; i < n; i++){
             int count = 0;
             for (Integer cardValue : cardValues) {
@@ -241,7 +272,6 @@ public class Hand {
                 maxfreq = cardValues.get(i);
             }
         }
-        //print the result
         return maxfreq;
     }
 }

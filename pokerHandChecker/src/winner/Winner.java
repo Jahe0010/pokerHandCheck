@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static java.lang.Float.sum;
+
 public class Winner {
     private Hand hand1;
     private Hand hand2;
@@ -29,12 +31,45 @@ public class Winner {
         if(Objects.equals(this.hand1.getHandValue(), this.hand2.getHandValue())){
            /**
             * If its a fullhouse there could be a special case. Because then the highest triple wins
+            * four of a kind and three pair can be added to the logic of fullhouse because always the highest combination wins and there is no possibility of the same combination in the same height
+            * If its two pair we have to check make a different check!
+            * if its one pair we have to check if they are the same.
             */
-           if(this.hand1.getHandValue() == HAND_RANK.fullhouse){
-               if(this.hand1.getMostFrequentValue() > this.hand2.getMostFrequentValue()) {
+           if(this.hand1.getHandValue() == HAND_RANK.fourOfAKind || this.hand1.getHandValue() == HAND_RANK.fullhouse || this.hand1.getHandValue() == HAND_RANK.threeOfAKind) {
+               if(this.hand1.getHandValue() == HAND_RANK.fullhouse){
+                   if(this.hand1.getMostFrequentValue() > this.hand2.getMostFrequentValue()) {
+                       return "Hand 1 won!";
+                   } else {
+                       return "Hand 2 won!";
+                   }
+               } else if(this.hand1.getMostFrequentValues().get(0) > this.hand2.getMostFrequentValues().get(0)) {
                    return "Hand 1 won!";
                } else {
-                    return "Hand 2 won!";
+                   return "Hand 2 won!";
+               }
+           } else if (this.hand1.getHandValue() == HAND_RANK.twoPair) {
+               if(this.hand1.getMostFrequentValues().get(0) > this.hand2.getMostFrequentValues().get(0)) {
+                   return "Hand 1 won!";
+               } else if(this.hand1.getMostFrequentValues().get(1) > this.hand2.getMostFrequentValues().get(1)) {
+                   return "Hand 2 won!";
+               } else {
+                   if(Collections.max(this.hand1.getCardValues()) < Collections.max(this.hand2.getCardValues())) {
+                       return "Hand 1 won!";
+                   } else {
+                       return "Hand 2 won!";
+                   }
+               }
+           } else if (this.hand1.getHandValue() == HAND_RANK.onePair) {
+               if(Objects.equals(this.hand1.getMostFrequentValues().get(0), this.hand2.getMostFrequentValues().get(0))) {
+                   if(Collections.max(this.hand1.getCardValues()) < Collections.max(this.hand2.getCardValues())) {
+                       return "Hand 1 won!";
+                   } else {
+                       return "Hand 2 won!";
+                   }
+               } else if(this.hand1.getMostFrequentValues().get(0) > this.hand2.getMostFrequentValues().get(0)) {
+                   return "Hand 1 won!";
+               } else {
+                   return "Hand 2 won!";
                }
            } else {
                if(Objects.equals(this.hand1.getHighestCard(), this.hand2.getHighestCard())) {

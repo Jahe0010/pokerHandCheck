@@ -20,7 +20,7 @@ public class Main {
     public static final Hand fullHouse1 =  new Hand(new Card(CARD_SUITE.H, 9), new Card(CARD_SUITE.D, 9), new Card(CARD_SUITE.S, 9), new Card(CARD_SUITE.H, 5), new Card(CARD_SUITE.C,5));
     public static final Hand fullHouse2 =  new Hand( new Card(CARD_SUITE.H, 10), new Card(CARD_SUITE.D, 10), new Card(CARD_SUITE.S, 8), new Card(CARD_SUITE.C, 8), new Card(CARD_SUITE.D,8));
 
-    // two full house with same highcard
+    // two full house with same pair
     public static final Hand fullHouse3 =  new Hand(new Card(CARD_SUITE.H, 9), new Card(CARD_SUITE.D, 9), new Card(CARD_SUITE.S, 9), new Card(CARD_SUITE.H, 14), new Card(CARD_SUITE.C,14));
     public static final Hand fullHouse4 =  new Hand( new Card(CARD_SUITE.H, 10), new Card(CARD_SUITE.D, 10), new Card(CARD_SUITE.S, 10), new Card(CARD_SUITE.S, 14), new Card(CARD_SUITE.D,14));
 
