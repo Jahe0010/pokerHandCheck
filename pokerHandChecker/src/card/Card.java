@@ -1,7 +1,5 @@
 package card;
 
-import java.util.Map;
-
 public class Card implements Comparable<Card>{
     private final CARD_SUITE cardSuite;
     private final int cardValue;
