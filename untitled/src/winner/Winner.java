@@ -1,9 +1,13 @@
 package winner;
 
 import card.Card;
+import hand.HAND_RANK;
 import hand.Hand;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Winner {
     private Hand hand1;
@@ -14,7 +18,43 @@ public class Winner {
         this.hand2 = hand2;
     }
 
+    /**
+     * We always return the string with the information which of both hands has one
+     * @return
+     */
     public String whoWon(){
-        return hand1.getHandValue();
+        /**
+         * First we check if they hit the same HandValue (fullHouse, pair, and so on...)
+         */
+        if(Objects.equals(this.hand1.getHandValue(), this.hand2.getHandValue())){
+           /**
+            * If its a fullhouse there could be a special case. Because then the highest triple wins
+            */
+           if(this.hand1.getHandValue() == HAND_RANK.fullhouse){
+               if(this.hand1.getMostFrequentValue() > this.hand2.getMostFrequentValue()) {
+                   return "Hand 1 won!";
+               } else {
+                    return "Hand 2 won!";
+               }
+           } else {
+               if(Objects.equals(this.hand1.getHighestCard(), this.hand2.getHighestCard())) {
+                   return "Draw! No winner yet! Split Pot!";
+               } else if(this.hand1.getHighestCard() < this.hand2.getHighestCard()) {
+                   return "Hand 1 won!";
+               } else {
+                   return "Hand 2 won!";
+               }
+           }
+        } else {
+            /**
+             * Lower hand value wins (its based on the structure from the enum.
+             * The enum hast the highest level first and the lowest last. so the lower index of the enum field wins
+             */
+            if(Arrays.asList(HAND_RANK.values()).indexOf(this.hand1.getHandValue()) < Arrays.asList(HAND_RANK.values()).indexOf(this.hand2.getHandValue())) {
+                return "Hand 1 won!";
+            } else {
+                return "Hand 2 won!";
+            }
+        }
     }
 }

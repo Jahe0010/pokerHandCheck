@@ -1,6 +1,4 @@
 package hand;
-
-import card.CARD_SUITE;
 import card.Card;
 
 import java.util.ArrayList;
@@ -11,6 +9,7 @@ import java.util.stream.Collectors;
 
 public class Hand {
     List<Card> hand;
+
 
     public Hand(Card card, Card card1, Card card2, Card card3, Card card4) {
         List<Card> cards = new ArrayList<Card>();
@@ -23,35 +22,62 @@ public class Hand {
         this.hand = cards;
     }
 
-    public String getHandValue() {
+    /**
+     * just returns the highest card value
+     * Its for the high card check
+     * @return
+     */
+    public Integer getHighestCard() {
+        return this.hand.get(4).getCardValue();
+    }
+
+    /**
+     * just returns a flat list of the card values on your hand
+     * @return
+     */
+    public List<Integer> getCardValues() { return this.hand.stream().map(Card::getCardValue).collect(Collectors.toList());}
+
+    /**
+     * returns the most frequent value in the hand
+     * @return
+     */
+    public Integer getMostFrequentValue () {
+        return mostFrequentChecker(this.getCardValues());
+    }
+
+    /**
+     * the order of the ifs show the height of the mapping
+     * @return
+     */
+    public HAND_RANK getHandValue() {
         if(hasRoyalFlush()) {
-            return "has royal flush";
+            return HAND_RANK.royalFlush;
         }
         else if(hasStraightFlush()) {
-            return "straight flush";
+            return HAND_RANK.straightFlush;
         }
         else if(hasFourOfAKind()) {
-            return "has four of a kind";
+            return HAND_RANK.fourOfAKind;
         }
         else if(hasFullHouse()){
-            return "has fullhouse";
+            return HAND_RANK.fullhouse;
         }
         else if(hasFlush()) {
-            return "has flush";
+            return HAND_RANK.flush;
         }
         else if(hasStraight()) {
-            return "has straight";
+            return HAND_RANK.straight;
         }
         else if(hasThreeOfAKind()) {
-            return "has three of a kind";
+            return HAND_RANK.threeOfAKind;
         }
         else if(hasTwoPair()) {
-            return "has two pair";
+            return HAND_RANK.twoPair;
         }
         else if(hasPair()){
-            return "pair";
+            return HAND_RANK.onePair;
         }
-        return hand.get(5).toString();
+        return HAND_RANK.highCard;
     }
 
     /**
@@ -159,7 +185,7 @@ public class Hand {
     private boolean hasRoyalFlush(){
         if(hasFlush()){
             if(hasStraight()) {
-                return this.hand.get(5).getCardValue() == 14;
+                return this.hand.get(4).getCardValue() == 14;
             } else {
                 return false;
             }
@@ -174,7 +200,7 @@ public class Hand {
      */
     private boolean isStraight() {
         List<Integer> valueList = hand.stream().map(Card::getCardValue).toList();
-        return Collections.max(valueList) - Collections.min(valueList) == 5;
+        return Collections.max(valueList) - Collections.min(valueList) == 4;
     }
 
     /**
@@ -189,5 +215,33 @@ public class Hand {
         String card5 = String.valueOf(this.hand.get(4).getCardSuite());
 
         return (Objects.equals(card1, card2) && Objects.equals(card2, card3) && Objects.equals(card3, card4) && Objects.equals(card4, card5));
+    }
+
+    /**
+     * Checks which number in a hand is the most frequent one and returns its value
+     * this is important if we have two flushs because than the highest three of a kind wins
+     * @return
+     */
+    private int mostFrequentChecker(List<Integer> cardValues) {
+        int n = cardValues.size();
+        int max_count = 0;
+        int maxfreq = 0;
+
+        //Logic implementation
+        for (int i = 0; i < n; i++){
+            int count = 0;
+            for (Integer cardValue : cardValues) {
+                if (Objects.equals(cardValues.get(i), cardValue)) {
+                    count++;
+                }
+            }
+
+            if (count > max_count){
+                max_count = count;
+                maxfreq = cardValues.get(i);
+            }
+        }
+        //print the result
+        return maxfreq;
     }
 }
